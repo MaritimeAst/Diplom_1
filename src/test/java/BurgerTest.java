@@ -64,7 +64,7 @@ public class BurgerTest {
         burger.addIngredient(secondIngredient);
         int indexSecondIngredient = burger.ingredients.indexOf(secondIngredient);
         burger.moveIngredient(indexSecondIngredient, indexFirstIngredient);
-        assertEquals("Данные не совпадают", secondIngredient, burger.ingredients.get(0));
+        assertEquals("Проверка перемещания ингредиента", secondIngredient, burger.ingredients.get(0));
 
     }
 
