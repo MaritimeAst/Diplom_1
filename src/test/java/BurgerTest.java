@@ -18,8 +18,8 @@ import static praktikum.IngredientType.SAUCE;
 @RunWith(MockitoJUnitRunner.class)
 public class BurgerTest {
 
-    Burger burger;
     private final float DELTA = 0.001f;
+    Burger burger;
     @Mock
     Bun bun;
     @Mock
@@ -43,7 +43,7 @@ public class BurgerTest {
         burger.addIngredient(ingredient);
         assertNotNull(burger.ingredients);
         int size = burger.ingredients.size();
-        System.out.println("В списке содержится " + size + " ингредиент(а)");
+        System.out.println("Количество ингредиентов " + size);
     }
 
     @Test
@@ -52,7 +52,7 @@ public class BurgerTest {
         burger.addIngredient(ingredient);
         int index = burger.ingredients.indexOf(ingredient);
         burger.removeIngredient(index);
-        System.out.println("Список ингредиентов пуст - " + burger.ingredients.isEmpty());
+        System.out.println("Удалены ли все ингредиенты из списка " + burger.ingredients.isEmpty());
     }
 
     @Test
@@ -60,11 +60,48 @@ public class BurgerTest {
 
         burger.addIngredient(ingredient);
         int indexFirstIngredient = burger.ingredients.indexOf(ingredient);
-        Ingredient secondIngredient = new Ingredient(SAUCE, "Говяжий метеорит", 0.35F);
+        Ingredient secondIngredient = new Ingredient(SAUCE, "Говяжий метеорит", 0.85F);
         burger.addIngredient(secondIngredient);
         int indexSecondIngredient = burger.ingredients.indexOf(secondIngredient);
         burger.moveIngredient(indexSecondIngredient, indexFirstIngredient);
         assertEquals("Данные не совпадают", secondIngredient, burger.ingredients.get(0));
-        System.out.println("Теперь в бургере первый ингредиент это - " + burger.ingredients.get(0).getName());
+
+    }
+
+    @Test
+    public void countBurgerPrice() {
+
+        float priceBun = 0.55f;
+        float priceIngredient = 0.85f;
+        burger.setBuns(bun);
+        when(bun.getPrice()).thenReturn(priceBun);
+        Ingredient secondIngredient = new Ingredient(SAUCE, "Говяжий метеорит", 0.85f);
+        burger.addIngredient(ingredient);
+        burger.addIngredient(secondIngredient);
+        when(ingredient.getPrice()).thenReturn(priceIngredient);
+        float expected = priceIngredient + priceBun * 2 + 0.85f;
+        assertEquals("Проверка полной стоимости бургера", expected, burger.getPrice(), DELTA);
+        Mockito.verify(bun, Mockito.times(1)).getPrice();
+        Mockito.verify(ingredient, Mockito.times(1)).getPrice();
+    }
+
+    @Test
+    public void getBurgerReceipt() {
+
+        float priceBun = 0.55f;
+        float priceIngredient = 0.5f;
+        Ingredient secondIngredient = new Ingredient(SAUCE, "Соус традиционный галактический", 0.35f);
+        when(bun.getName()).thenReturn("Марсианская красная булка");
+        when(bun.getPrice()).thenReturn(priceBun);
+        when(ingredient.getType()).thenReturn(FILLING);
+        when(ingredient.getName()).thenReturn("Говяжий метеорит");
+        when(ingredient.getPrice()).thenReturn(priceIngredient);
+        burger.setBuns(bun);
+        burger.addIngredient(ingredient);
+        burger.addIngredient(secondIngredient);
+        System.out.println(burger.getReceipt());
+        Mockito.verify(bun, Mockito.times(2)).getName();
+        Mockito.verify(ingredient, Mockito.times(1)).getType();
+        Mockito.verify(ingredient, Mockito.times(1)).getName();
     }
 }
