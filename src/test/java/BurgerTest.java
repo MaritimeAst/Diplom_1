@@ -43,7 +43,7 @@ public class BurgerTest {
         burger.addIngredient(ingredient);
         assertNotNull(burger.ingredients);
         int size = burger.ingredients.size();
-        System.out.println("Количество ингредиентов " + size);
+        System.out.println("Count of ingredients " + size);
     }
 
     @Test
@@ -52,7 +52,7 @@ public class BurgerTest {
         burger.addIngredient(ingredient);
         int index = burger.ingredients.indexOf(ingredient);
         burger.removeIngredient(index);
-        System.out.println("Удалены ли все ингредиенты из списка " + burger.ingredients.isEmpty());
+        System.out.println("The list of ingredients is empty" + burger.ingredients.isEmpty());
     }
 
     @Test
