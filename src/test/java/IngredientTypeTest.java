@@ -12,9 +12,9 @@ import static praktikum.IngredientType.SAUCE;
 public class IngredientTypeTest {
 
     private final IngredientType ingredientType;
-    private final IngredientType expectedType;
+    private final String expectedType;
 
-    public IngredientTypeTest(IngredientType ingredientType, IngredientType expectedType) {
+    public IngredientTypeTest(IngredientType ingredientType, String expectedType) {
         this.ingredientType = ingredientType;
         this.expectedType = expectedType;
     }
@@ -22,15 +22,13 @@ public class IngredientTypeTest {
     @Parameterized.Parameters
     public static Object[][] ingredientTypeParam() {
         return new Object[][]{
-                {SAUCE, SAUCE},
-                {FILLING, FILLING}
+                {IngredientType.SAUCE, "SAUCE"},
+                {IngredientType.FILLING, "FILLING"}
         };
     }
 
     @Test
     public void getIngredientType() {
-        Ingredient ingredient = new Ingredient(ingredientType, "Мясо бессмертных моллюсков Protostomia", 0.6f);
-        IngredientType actualType = ingredient.getType();
-        assertEquals("Проверка корректности типа ингредиента", expectedType, actualType);
+        assertEquals("Проверка корректности типа ингредиента" + ingredientType.toString(), ingredientType, IngredientType.valueOf(expectedType));
     }
 }
